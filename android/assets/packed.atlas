@@ -52,9 +52,16 @@ lost-overlay
   orig: 780, 600
   offset: 0, 0
   index: -1
-operating-theatre
+monster-closet
   rotate: false
   xy: 264, 2
+  size: 260, 200
+  orig: 260, 200
+  offset: 0, 0
+  index: -1
+operating-theatre
+  rotate: false
+  xy: 526, 2
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
@@ -78,6 +85,26 @@ temp-man
   xy: 784, 736
   size: 55, 134
   orig: 55, 134
+  offset: 0, 0
+  index: -1
+
+packed2.png
+size: 1024,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+outrage-room
+  rotate: false
+  xy: 2, 2
+  size: 260, 200
+  orig: 260, 200
+  offset: 0, 0
+  index: -1
+waiting-room
+  rotate: false
+  xy: 264, 2
+  size: 260, 200
+  orig: 260, 200
   offset: 0, 0
   index: -1
 zap-room

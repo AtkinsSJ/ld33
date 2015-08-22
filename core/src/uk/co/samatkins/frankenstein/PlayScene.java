@@ -51,6 +51,9 @@ public class PlayScene extends Scene {
 	private final Label incomeLabel;
 	private final Label expensesLabel;
 
+	private final TextureRegion applicantBackground,
+								monstersBackground,
+								outrageBackground;
 	private final TextureRegion applicantImage;
 	private int applicantCount;
 	private float applicantCounter;
@@ -127,6 +130,10 @@ public class PlayScene extends Scene {
 		tempMan = game.skin.getRegion("temp-man");
 		applicantImage = game.skin.getRegion("applicant");
 		sadFace = game.skin.getRegion("sadface");
+
+		monstersBackground = game.skin.getRegion("monster-closet");
+		applicantBackground = game.skin.getRegion("waiting-room");
+		outrageBackground = game.skin.getRegion("outrage-room");
 
 		bodyPartCount = 0;
 		bodyCount = 0;
@@ -451,21 +458,21 @@ public class PlayScene extends Scene {
 		batch.draw(zappingBackground, 520, 400);
 
 		// Monster storage
-//		batch.draw(zappingBackground, 0, 200);
+		batch.draw(monstersBackground, 0, 200);
 		int drawMonsters = monsterCount - (draggingMonster ? 1 : 0);
 		for (int i=0; i<drawMonsters; i++) {
 			batch.draw(tempMan, (i % 8) * 30, 250 - (i / 8) * 10);
 		}
 
 		// Job applicants
-//		batch.draw(zappingBackground, 0, 200);
+		batch.draw(applicantBackground, 260, 200);
 		int drawApplicants = applicantCount - (draggingApplicant ? 1 : 0);
 		for (int i=0; i<drawApplicants; i++) {
 			batch.draw(applicantImage, 260 + (i % 8) * 30, 250 - (i / 8) * 10);
 		}
 
 		// Public Outrage
-//		batch.draw(zappingBackground, 0, 200);
+		batch.draw(outrageBackground, 520, 200);
 		int drawOutrages = (int) (outragePercent / 10);
 		for (int i=0; i<drawOutrages; i++) {
 			batch.draw(sadFace, 520 + (i % 5) * 52, 300 - (i / 5) * 100);
