@@ -13,7 +13,7 @@ applicant
   index: -1
 button
   rotate: false
-  xy: 841, 944
+  xy: 895, 976
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -22,7 +22,7 @@ button
   index: -1
 button-disabled
   rotate: false
-  xy: 841, 976
+  xy: 784, 704
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -31,7 +31,7 @@ button-disabled
   index: -1
 button-down
   rotate: false
-  xy: 784, 704
+  xy: 841, 927
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -57,6 +57,13 @@ operating-theatre
   xy: 264, 2
   size: 260, 200
   orig: 260, 200
+  offset: 0, 0
+  index: -1
+sadface
+  rotate: false
+  xy: 841, 959
+  size: 52, 47
+  orig: 52, 47
   offset: 0, 0
   index: -1
 sell-overlay

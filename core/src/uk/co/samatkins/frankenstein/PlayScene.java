@@ -62,7 +62,7 @@ public class PlayScene extends Scene {
 	private float dragX, dragY;
 
 	private float outragePercent;
-	private final Money orphanageCost;
+	private final TextureRegion sadFace;
 
 	enum GameState {
 		Playing,
@@ -122,12 +122,11 @@ public class PlayScene extends Scene {
 		expensesRemainder = new Money(0, 0, 0);
 		moneyChangeCounter = 0;
 		secondsCounter = 0;
-
-		outragePercent = 0f;
-		orphanageCost = new Money(3,10,0);
+		outragePercent = 45f;
 
 		tempMan = game.skin.getRegion("temp-man");
 		applicantImage = game.skin.getRegion("applicant");
+		sadFace = game.skin.getRegion("sadface");
 
 		bodyPartCount = 0;
 		bodyCount = 0;
@@ -207,7 +206,7 @@ public class PlayScene extends Scene {
 		{
 			Table buttonsTable = new Table(game.skin);
 
-			buttonsTable.add(new OutrageButton("Orphanage", game.skin, orphanageCost, 30f)).row();
+			buttonsTable.add(new OutrageButton("Orphanage", game.skin, new Money(3, 10, 0), 30f)).row();
 
 			table.add(buttonsTable).row();
 		}
@@ -466,8 +465,11 @@ public class PlayScene extends Scene {
 		}
 
 		// Public Outrage
-
-
+//		batch.draw(zappingBackground, 0, 200);
+		int drawOutrages = (int) (outragePercent / 10);
+		for (int i=0; i<drawOutrages; i++) {
+			batch.draw(sadFace, 520 + (i % 5) * 52, 300 - (i / 5) * 100);
+		}
 
 		if (draggingMonster) {
 			sellOverlay.setVisible(true);
