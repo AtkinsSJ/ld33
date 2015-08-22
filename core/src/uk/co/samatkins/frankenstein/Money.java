@@ -37,6 +37,6 @@ public class Money {
 		int pounds = totalPence / 240,
 			shillings = (totalPence / 12) % 20,
 			pence = totalPence % 12;
-		return String.format("\u00A3%1$d.%2$ds.%3$dd", pounds, shillings, pence);
+		return String.format("\u00A3%1$d.%2$02ds.%3$02dd", pounds, shillings, pence);
 	}
 }

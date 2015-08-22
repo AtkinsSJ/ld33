@@ -34,8 +34,9 @@ public class PlayScene extends Scene {
 
 	private final Money money;
 	private final Money income;
-	private final Money expenses;
+	private final Money expenses, expensesPerSecond, expensesRemainder;
 	private float moneyChangeCounter;
+	private int secondsCounter;
 	private final Money sellMonsterAmount = new Money(0, 5, 0);
 
 	private final Label diggingLabel;
@@ -88,10 +89,13 @@ public class PlayScene extends Scene {
 	PlayScene(FrankGame game) {
 		super(game);
 
-		money = new Money(5, 10, 6);
+		money = new Money(1, 0, 6);
 		income = new Money(0, 0, 0);
 		expenses = new Money(0, 0, 0);
+		expensesPerSecond = new Money(0, 0, 0);
+		expensesRemainder = new Money(0, 0, 0);
 		moneyChangeCounter = 0;
+		secondsCounter = 0;
 
 		tempMan = game.skin.getRegion("temp-man");
 
@@ -275,15 +279,19 @@ public class PlayScene extends Scene {
 		}
 
 		income.setTotalPence(0);
-		int expensesPence = (int)(3 * (diggerMonsters + surgeonMonsters + zapperMonsters)
-								+ 12 * (diggers + surgeons + zappers));
-		expenses.setTotalPence(expensesPence);
 
 		moneyChangeCounter += delta;
-		if (moneyChangeCounter > 60f) {
-			moneyChangeCounter -= 60f;
-			money.add(income);
-			money.subtract(expenses);
+		if (moneyChangeCounter > 1f) {
+			secondsCounter++;
+			if (secondsCounter >= 60) {
+				secondsCounter -= 60;
+				// Remainder
+				money.subtract(expensesRemainder);
+			}
+
+			moneyChangeCounter -= 1f;
+//			money.add(income);
+			money.subtract(expensesPerSecond);
 		}
 
 		updateLabels();
@@ -351,6 +359,8 @@ public class PlayScene extends Scene {
 		}
 		float digPerMinute = (diggers * 18f) + (diggerMonsters * 4f);
 		diggingDelay = 60f / digPerMinute;
+
+		updateExpenses();
 	}
 
 	void addSurgeon(boolean isMonster) {
@@ -362,6 +372,8 @@ public class PlayScene extends Scene {
 		}
 		float stitchPerMinute = (surgeons * 4f) + (surgeonMonsters * 1f);
 		stitchingDelay = 60f / stitchPerMinute;
+
+		updateExpenses();
 	}
 
 	void addZapper(boolean isMonster) {
@@ -373,10 +385,22 @@ public class PlayScene extends Scene {
 		}
 		float zapPerMinute = (zappers * 3f) + (zapperMonsters * 0.8f);
 		zappingDelay = 60f / zapPerMinute;
+
+		updateExpenses();
 	}
 
 	void sellMonster() {
 		money.add(sellMonsterAmount);
 		monsterCount--;
+	}
+
+	void updateExpenses() {
+		int expensesPence = (int)(3 * (diggerMonsters + surgeonMonsters + zapperMonsters)
+			+ 12 * (diggers + surgeons + zappers));
+		int expensesPencePerSec = expensesPence / 60;
+		int remainder = expensesPencePerSec > 0 ? (expensesPence % expensesPencePerSec) : 0;
+		expenses.setTotalPence(expensesPence);
+		expensesPerSecond.setTotalPence(expensesPencePerSec);
+		expensesRemainder.setTotalPence(remainder);
 	}
 }
