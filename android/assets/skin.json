@@ -13,7 +13,7 @@
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
 		"default": {
 			"font": "textFont",
-			"fontColor": "white"
+			"fontColor": "gold"
 		},
 		"title": {
 			"font": "titleFont",

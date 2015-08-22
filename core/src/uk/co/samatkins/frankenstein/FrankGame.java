@@ -19,12 +19,18 @@ public class FrankGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		viewport = new FitViewport(800, 600);
+		viewport = new FitViewport(780, 600);
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("packed.atlas"));
 		skin = new Skin(Gdx.files.internal("skin.json"), atlas);
 
 		showMenu();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+		viewport.update(width, height);
 	}
 
 	@Override
