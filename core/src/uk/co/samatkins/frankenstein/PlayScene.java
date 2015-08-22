@@ -3,10 +3,13 @@ package uk.co.samatkins.frankenstein;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 
 public class PlayScene extends Scene {
 
@@ -29,6 +32,12 @@ public class PlayScene extends Scene {
 	private int bodyCount;
 	private int monsterCount;
 
+	private final Money money;
+	private final Money income;
+	private final Money expenses;
+	private float moneyChangeCounter;
+	private final Money sellMonsterAmount = new Money(0, 5, 0);
+
 	private final Label diggingLabel;
 	private final Label stitchingLabel;
 	private final Label zappingLabel;
@@ -40,17 +49,23 @@ public class PlayScene extends Scene {
 	private final Label expensesLabel;
 
 	private final TextureRegion tempMan;
+	private final Group sellOverlay;
 	private boolean draggingMonster;
 	private float dragX, dragY;
 
 	enum Room {
 		Digging,
 		Surgery,
-		Zapping
+		Zapping,
+		Sell
 	}
 	private Room getRoomAtPosition(float x, float y) {
 		if (x < 0 || x >= 780 || y < 0 || y >= 600) {
 			return null;
+		}
+
+		if (y < 200) {
+			return Room.Sell;
 		}
 
 		if (x < 260) {
@@ -72,6 +87,11 @@ public class PlayScene extends Scene {
 
 	PlayScene(FrankGame game) {
 		super(game);
+
+		money = new Money(5, 10, 6);
+		income = new Money(0, 0, 0);
+		expenses = new Money(0, 0, 0);
+		moneyChangeCounter = 0;
 
 		tempMan = game.skin.getRegion("temp-man");
 
@@ -121,9 +141,9 @@ public class PlayScene extends Scene {
 		table.add(outrageLabel).row();
 
 		Table statsTable = new Table(game.skin);
-		fundsLabel = new Label("Funds: £22.37", game.skin);
-		incomeLabel = new Label("Income: £0.35 / minute", game.skin);
-		expensesLabel = new Label("Expenses: £0.20 / minute", game.skin);
+		fundsLabel = new Label("", game.skin);
+		incomeLabel = new Label("", game.skin);
+		expensesLabel = new Label("", game.skin);
 
 		statsTable.add("All lies:").row();
 		statsTable.add(fundsLabel).row();
@@ -145,15 +165,18 @@ public class PlayScene extends Scene {
 						switch (room) {
 							case Digging: {
 								addDigger(true);
-								monsterCount--;
 							} break;
+
 							case Surgery: {
 								addSurgeon(true);
-								monsterCount--;
 							} break;
+
 							case Zapping: {
 								addZapper(true);
-								monsterCount--;
+							} break;
+
+							case Sell: {
+								sellMonster();
 							} break;
 						}
 					}
@@ -189,19 +212,25 @@ public class PlayScene extends Scene {
 			}
 		});
 
+		// Sell Overlay
+		{
+			sellOverlay = new Group();
+			Image image = new Image(game.skin.getRegion("sell-overlay"));
+			image.setPosition(0,0);
+			sellOverlay.addActor(image);
+
+			Label sellLabel = new Label("SELL", game.skin, "title");
+			sellLabel.setPosition(390, 150, Align.center);
+			sellOverlay.addActor(sellLabel);
+
+			Label costLabel = new Label(String.format("(+ %s)", sellMonsterAmount), game.skin, "title");
+			costLabel.setPosition(390, 50, Align.center);
+			sellOverlay.addActor(costLabel);
+
+			addActor(sellOverlay);
+		}
+
 //		table.debug(Table.Debug.all);
-	}
-
-	void updateLabels() {
-		float bodyPartsPerMinute = 60f / diggingDelay;
-		float bodiesPerMinute = 60f / stitchingDelay;
-		float monstersPerMinute = 60f / zappingDelay;
-
-		diggingLabel.setText(String.format("Body Parts: %1$d\n(%2$.2f / minute)", bodyPartCount, bodyPartsPerMinute));
-		stitchingLabel.setText(String.format("Bodies: %1$d\n(%2$.2f / minute)", bodyCount, bodiesPerMinute));
-		zappingLabel.setText(String.format("Monsters: %1$d\n(%2$.2f / minute)", monsterCount, monstersPerMinute));
-
-		monstersLabel.setText(String.format("Monsters: %d", monsterCount));
 	}
 
 	@Override
@@ -238,7 +267,35 @@ public class PlayScene extends Scene {
 			}
 		}
 
+		income.setTotalPence(0);
+		int expensesPence = (int)(3 * (diggerMonsters + surgeonMonsters + zapperMonsters)
+								+ 12 * (diggers + surgeons + zappers));
+		expenses.setTotalPence(expensesPence);
+
+		moneyChangeCounter += delta;
+		if (moneyChangeCounter > 60f) {
+			moneyChangeCounter -= 60f;
+			money.add(income);
+			money.subtract(expenses);
+		}
+
 		updateLabels();
+	}
+
+	void updateLabels() {
+		float bodyPartsPerMinute = 60f / diggingDelay;
+		float bodiesPerMinute = 60f / stitchingDelay;
+		float monstersPerMinute = 60f / zappingDelay;
+
+		diggingLabel.setText(String.format("Body Parts: %1$d\n(%2$.2f / minute)", bodyPartCount, bodyPartsPerMinute));
+		stitchingLabel.setText(String.format("Bodies: %1$d\n(%2$.2f / minute)", bodyCount, bodiesPerMinute));
+		zappingLabel.setText(String.format("Monsters: %1$d\n(%2$.2f / minute)", monsterCount, monstersPerMinute));
+
+		monstersLabel.setText(String.format("Monsters: %d", monsterCount));
+
+		incomeLabel.setText(String.format("Income: %s / minute", income));
+		expensesLabel.setText(String.format("Expenses: %s / minute", expenses));
+		fundsLabel.setText(String.format("Funds: %s", money));
 	}
 
 	@Override
@@ -260,8 +317,17 @@ public class PlayScene extends Scene {
 			batch.draw(tempMan, (i % 8) * 30, 250 - (i / 8) * 10);
 		}
 
+		// Job applicants
+
+		// Public Outrage
+
+
+
 		if (draggingMonster) {
+			sellOverlay.setVisible(true);
 			batch.draw(tempMan, dragX, dragY);
+		} else {
+			sellOverlay.setVisible(false);
 		}
 
 		batch.end();
@@ -272,6 +338,7 @@ public class PlayScene extends Scene {
 	void addDigger(boolean isMonster) {
 		if (isMonster) {
 			diggerMonsters++;
+			monsterCount--;
 		} else {
 			diggers++;
 		}
@@ -282,6 +349,7 @@ public class PlayScene extends Scene {
 	void addSurgeon(boolean isMonster) {
 		if (isMonster) {
 			surgeonMonsters++;
+			monsterCount--;
 		} else {
 			surgeons++;
 		}
@@ -292,10 +360,16 @@ public class PlayScene extends Scene {
 	void addZapper(boolean isMonster) {
 		if (isMonster) {
 			zapperMonsters++;
+			monsterCount--;
 		} else {
 			zappers++;
 		}
 		float zapPerMinute = (zappers * 3f) + (zapperMonsters * 0.8f);
 		zappingDelay = 60f / zapPerMinute;
+	}
+
+	void sellMonster() {
+		money.add(sellMonsterAmount);
+		monsterCount--;
 	}
 }

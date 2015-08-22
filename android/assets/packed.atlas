@@ -1,6 +1,6 @@
 
 packed.png
-size: 1024,256
+size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -27,9 +27,16 @@ operating-theatre
   orig: 260, 200
   offset: 0, 0
   index: -1
+sell-overlay
+  rotate: false
+  xy: 2, 236
+  size: 780, 200
+  orig: 780, 200
+  offset: 0, 0
+  index: -1
 temp-man
   rotate: false
-  xy: 788, 100
+  xy: 784, 302
   size: 55, 134
   orig: 55, 134
   offset: 0, 0
