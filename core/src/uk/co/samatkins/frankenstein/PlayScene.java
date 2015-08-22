@@ -286,8 +286,6 @@ public class PlayScene extends Scene {
 
 			addActor(sellOverlay);
 		}
-
-//		table.debug(Table.Debug.all);
 	}
 
 	@Override
