@@ -8,7 +8,8 @@
 	"com.badlogic.gdx.graphics.Color": {
 		"white": { "r": 1, "g": 1, "b": 1, "a": 1 },
 		"black": { "r": 0, "g": 0, "b": 0, "a": 1 },
-		"gold": { "r": 1, "g": 0.757, "b": 0, "a": 1 }
+		"gold": { "r": 1, "g": 0.757, "b": 0, "a": 1 },
+		"warning": { "r": 0.843, "g": 0.224, "b": 0.224, "a": 1 }
 	},
 
 	"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
@@ -23,6 +24,10 @@
 		"titleItalic": {
 			"font": "titleItalicFont",
 			"fontColor": "white"
+		},
+		"warning": {
+			"font": "titleItalicFont",
+			"fontColor": "warning"
 		}
 	},
 

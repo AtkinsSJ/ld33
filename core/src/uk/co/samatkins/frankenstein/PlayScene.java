@@ -22,11 +22,13 @@ public class PlayScene extends Scene {
 	private int surgeons, surgeonMonsters;
 	private float stitchingCounter;
 	private float stitchingDelay;
+	private final Label stitchingWaitingLabel;
 
 	private final TextureRegion zappingBackground;
 	private int zappers, zapperMonsters;
 	private float zappingCounter;
 	private float zappingDelay;
+	private final Label zappingWaitingLabel;
 
 	private int bodyPartCount;
 	private int bodyCount;
@@ -119,7 +121,10 @@ public class PlayScene extends Scene {
 		stitchingDelay = 5f;
 		stitchingLabel = new Label("Bodies: 0 / minute", game.skin);
 		stitchingLabel.setAlignment(Align.topLeft);
+		stitchingWaitingLabel = new Label("Waiting!", game.skin, "warning");
+		stitchingWaitingLabel.setPosition(260 + 130, 420, Align.center);
 		addSurgeon(false);
+		addActor(stitchingWaitingLabel);
 
 		zappingBackground = game.skin.getRegion("zap-room");
 		zappers = 0;
@@ -128,7 +133,10 @@ public class PlayScene extends Scene {
 		zappingDelay = 5f;
 		zappingLabel = new Label("Monsters: 0 / minute", game.skin);
 		zappingLabel.setAlignment(Align.topLeft);
+		zappingWaitingLabel = new Label("Waiting!", game.skin, "warning");
+		zappingWaitingLabel.setPosition(520 + 130, 420, Align.center);
 		addZapper(false);
+		addActor(zappingWaitingLabel);
 
 		Table table = new Table(game.skin);
 		table.setFillParent(true);
@@ -265,6 +273,9 @@ public class PlayScene extends Scene {
 				bodyCount++;
 				// TODO: Animate a +1 body
 			}
+			stitchingWaitingLabel.setVisible(false);
+		} else {
+			stitchingWaitingLabel.setVisible(true);
 		}
 
 		// Zapping
@@ -276,6 +287,9 @@ public class PlayScene extends Scene {
 				monsterCount++;
 				// TODO: Animate a +1 monster
 			}
+			zappingWaitingLabel.setVisible(false);
+		} else {
+			zappingWaitingLabel.setVisible(true);
 		}
 
 		income.setTotalPence(0);
@@ -306,7 +320,7 @@ public class PlayScene extends Scene {
 		stitchingLabel.setText(String.format("Bodies: %1$d (%2$.2f / minute)\nRequires 5 body parts", bodyCount, bodiesPerMinute));
 		zappingLabel.setText(String.format("Monsters: %1$d (%2$.2f / minute)", monsterCount, monstersPerMinute));
 
-		monstersLabel.setText(String.format("Monsters: %d", monsterCount));
+		monstersLabel.setText(String.format("Monsters: %d\n(Click and drag to assign or sell)", monsterCount));
 
 		incomeLabel.setText(String.format("Income: %s / minute", income));
 		expensesLabel.setText(String.format("Expenses: %s / minute", expenses));
