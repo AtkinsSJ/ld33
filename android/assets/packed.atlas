@@ -4,6 +4,13 @@ size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+applicant
+  rotate: false
+  xy: 784, 302
+  size: 55, 134
+  orig: 55, 134
+  offset: 0, 0
+  index: -1
 button
   rotate: false
   xy: 2, 2
@@ -36,7 +43,7 @@ sell-overlay
   index: -1
 temp-man
   rotate: false
-  xy: 784, 302
+  xy: 841, 302
   size: 55, 134
   orig: 55, 134
   offset: 0, 0

@@ -51,8 +51,13 @@ public class PlayScene extends Scene {
 	private final Label incomeLabel;
 	private final Label expensesLabel;
 
+	private final TextureRegion applicantImage;
+	private int applicantCount;
+	private float applicantCounter;
 	private final TextureRegion tempMan;
 	private final Group sellOverlay;
+
+	private boolean draggingApplicant;
 	private boolean draggingMonster;
 	private float dragX, dragY;
 
@@ -60,32 +65,40 @@ public class PlayScene extends Scene {
 		Digging,
 		Surgery,
 		Zapping,
+		MonsterCloset,
+		Applicants,
+		PublicOutrage,
 		Sell
 	}
 	private Room getRoomAtPosition(float x, float y) {
+		Room result;
+
 		if (x < 0 || x >= 780 || y < 0 || y >= 600) {
-			return null;
-		}
-
-		if (y < 200) {
-			return Room.Sell;
-		}
-
-		if (x < 260) {
-			if (y >= 400) {
-				return Room.Digging;
-			}
-		} else if (x < 520) {
-			if (y >= 400) {
-				return Room.Surgery;
-			}
+			result = null;
 		} else {
-			if (y >= 400) {
-				return Room.Zapping;
+
+			if (y < 200) {
+				result = Room.Sell;
+			} else if (y < 400) {
+				if (x < 260) {
+					result = Room.MonsterCloset;
+				} else if (x < 520) {
+					result = Room.Applicants;
+				} else {
+					result = Room.PublicOutrage;
+				}
+			} else {
+				if (x < 260) {
+					result = Room.Digging;
+				} else if (x < 520) {
+					result = Room.Surgery;
+				} else {
+					result = Room.Zapping;
+				}
 			}
 		}
 
-		return null;
+		return result;
 	}
 
 	PlayScene(FrankGame game) {
@@ -100,10 +113,13 @@ public class PlayScene extends Scene {
 		secondsCounter = 0;
 
 		tempMan = game.skin.getRegion("temp-man");
+		applicantImage = game.skin.getRegion("applicant");
 
 		bodyPartCount = 0;
 		bodyCount = 0;
 		monsterCount = 11;
+		applicantCount = 3 + 3;
+		applicantCounter = 0;
 
 		diggingBackground = game.skin.getRegion("graves");
 		diggers = 0;
@@ -177,36 +193,40 @@ public class PlayScene extends Scene {
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 				super.touchUp(event, x, y, pointer, button);
 				if (pointer == Input.Buttons.LEFT
-					&& draggingMonster) {
+					&& (draggingMonster || draggingApplicant)) {
 
 					Room room = getRoomAtPosition(x, y);
 					if (room != null) {
 						switch (room) {
 							case Digging: {
-								addDigger(true);
+								addDigger(draggingMonster);
 							} break;
 
 							case Surgery: {
-								addSurgeon(true);
+								addSurgeon(draggingMonster);
 							} break;
 
 							case Zapping: {
-								addZapper(true);
+								addZapper(draggingMonster);
 							} break;
 
 							case Sell: {
-								sellMonster();
+								if (draggingMonster) {
+									sellMonster();
+								}
 							} break;
 						}
 					}
 					draggingMonster = false;
+					draggingApplicant = false;
 				}
 			}
 
 			@Override
 			public void touchDragged(InputEvent event, float x, float y, int pointer) {
 				super.touchDragged(event, x, y, pointer);
-				if (draggingMonster && pointer == Input.Buttons.LEFT) {
+				if (pointer == Input.Buttons.LEFT
+					&& (draggingMonster || draggingApplicant)) {
 					dragX = x;
 					dragY = y;
 				}
@@ -215,18 +235,36 @@ public class PlayScene extends Scene {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				// Drag a monster if we have monsters and the mouse is in the monster closet
-				if (pointer == Input.Buttons.LEFT
-					&& monsterCount >= 1
-					&& x >= 0 && x <= 260
-					&& y >= 200 && y <= 400) {
+				if (pointer == Input.Buttons.LEFT) {
 
-					draggingMonster = true;
-					dragX = x;
-					dragY = y;
+					Room room = getRoomAtPosition(x, y);
+					if (room == null) {
+						return false;
+					}
+
+					switch (room) {
+						case MonsterCloset: {
+							if (monsterCount >= 1) {
+								draggingMonster = true;
+								dragX = x;
+								dragY = y;
+								return true;
+							}
+						} break;
+
+						case Applicants: {
+							if (applicantCount >= 1) {
+								draggingApplicant = true;
+								dragX = x;
+								dragY = y;
+								return true;
+							}
+						} break;
+					}
 
 					return true;
 				} else {
-					return super.touchDown(event, x, y, pointer, button);
+					return false;
 				}
 			}
 		});
@@ -304,8 +342,16 @@ public class PlayScene extends Scene {
 			}
 
 			moneyChangeCounter -= 1f;
-//			money.add(income);
 			money.subtract(expensesPerSecond);
+		}
+
+		// New applicants!
+		if (applicantCount < 5) {
+			applicantCounter += delta;
+			if (applicantCounter > 10f) {
+				applicantCounter -= 10f;
+				applicantCount++;
+			}
 		}
 
 		updateLabels();
@@ -321,6 +367,7 @@ public class PlayScene extends Scene {
 		zappingLabel.setText(String.format("Monsters: %1$d (%2$.2f / minute)", monsterCount, monstersPerMinute));
 
 		monstersLabel.setText(String.format("Monsters: %d\n(Click and drag to assign or sell)", monsterCount));
+		applicantsLabel.setText(String.format("Applicants: %d\n(Click and drag to assign)", applicantCount));
 
 		incomeLabel.setText(String.format("Income: %s / minute", income));
 		expensesLabel.setText(String.format("Expenses: %s / minute", expenses));
@@ -347,6 +394,11 @@ public class PlayScene extends Scene {
 		}
 
 		// Job applicants
+//		batch.draw(zappingBackground, 0, 200);
+		int drawApplicants = applicantCount - (draggingApplicant ? 1 : 0);
+		for (int i=0; i<drawApplicants; i++) {
+			batch.draw(applicantImage, 260 + (i % 8) * 30, 250 - (i / 8) * 10);
+		}
 
 		// Public Outrage
 
@@ -357,6 +409,10 @@ public class PlayScene extends Scene {
 			batch.draw(tempMan, dragX, dragY);
 		} else {
 			sellOverlay.setVisible(false);
+		}
+
+		if (draggingApplicant) {
+			batch.draw(applicantImage, dragX, dragY);
 		}
 
 		batch.end();
@@ -370,6 +426,7 @@ public class PlayScene extends Scene {
 			monsterCount--;
 		} else {
 			diggers++;
+			applicantCount--;
 		}
 		float digPerMinute = (diggers * 18f) + (diggerMonsters * 4f);
 		diggingDelay = 60f / digPerMinute;
@@ -383,6 +440,7 @@ public class PlayScene extends Scene {
 			monsterCount--;
 		} else {
 			surgeons++;
+			applicantCount--;
 		}
 		float stitchPerMinute = (surgeons * 4f) + (surgeonMonsters * 1f);
 		stitchingDelay = 60f / stitchPerMinute;
@@ -396,6 +454,7 @@ public class PlayScene extends Scene {
 			monsterCount--;
 		} else {
 			zappers++;
+			applicantCount--;
 		}
 		float zapPerMinute = (zappers * 3f) + (zapperMonsters * 0.8f);
 		zappingDelay = 60f / zapPerMinute;
