@@ -58,7 +58,7 @@ public class PlayScene extends Scene {
 
 		monstersLabel = new Label("Monsters", game.skin);
 		salesLabel = new Label("This space for rent", game.skin);
-		outrageLabel = new Label("Outrage: 15%", game.skin);
+		outrageLabel = new Label("Public Outrage: 15%", game.skin);
 
 		table.add(monstersLabel);
 		table.add(salesLabel);
@@ -73,6 +73,20 @@ public class PlayScene extends Scene {
 		statsTable.add(incomeLabel).row();
 		statsTable.add(expensesLabel).row();
 		table.add(statsTable).colspan(3);
+
+		updateLabels();
+	}
+
+	void updateLabels() {
+		float bodyPartsPerMinute = 60f / diggingDelay;
+		float bodiesPerMinute = 60f / stitchingDelay;
+		float monstersPerMinute = 60f / zappingDelay;
+
+		diggingLabel.setText(String.format("Body Parts: %1$d\n(%2$.2f / minute)", bodyPartCount, bodyPartsPerMinute));
+		stitchingLabel.setText(String.format("Bodies: %1$d\n(%2$.2f / minute)", bodyCount, bodiesPerMinute));
+		zappingLabel.setText(String.format("Monsters: %1$d\n(%2$.2f / minute)", monsterCount, monstersPerMinute));
+
+		monstersLabel.setText(String.format("Monsters: %d", monsterCount));
 	}
 
 	@Override
@@ -88,19 +102,27 @@ public class PlayScene extends Scene {
 		}
 
 		// Stitching
-		stitchingCounter += delta;
-		while (stitchingCounter >= stitchingDelay) {
-			stitchingCounter -= stitchingDelay;
-			bodyCount++;
-			// TODO: Animate a +1 body
+		if (bodyPartCount >= 5) {
+			stitchingCounter += delta;
+			while (stitchingCounter >= stitchingDelay && bodyPartCount >= 5) {
+				stitchingCounter -= stitchingDelay;
+				bodyPartCount -= 5;
+				bodyCount++;
+				// TODO: Animate a +1 body
+			}
 		}
 
 		// Zapping
-		zappingCounter += delta;
-		while (zappingCounter >= zappingDelay) {
-			zappingCounter -= zappingDelay;
-			monsterCount++;
-			// TODO: Animate a +1 monster
+		if (bodyCount >= 1) {
+			zappingCounter += delta;
+			while (zappingCounter >= zappingDelay && bodyCount >= 1) {
+				zappingCounter -= zappingDelay;
+				bodyCount -= 1;
+				monsterCount++;
+				// TODO: Animate a +1 monster
+			}
 		}
+
+		updateLabels();
 	}
 }
