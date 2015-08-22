@@ -66,6 +66,7 @@ public class PlayScene extends Scene {
 
 	private float outragePercent;
 	private final TextureRegion sadFace;
+	private final Label lostReason;
 
 	enum GameState {
 		Playing,
@@ -125,7 +126,7 @@ public class PlayScene extends Scene {
 		expensesRemainder = new Money(0, 0, 0);
 		moneyChangeCounter = 0;
 		secondsCounter = 0;
-		outragePercent = 45f;
+		outragePercent = 0.45f;
 
 		tempMan = game.skin.getRegion("temp-man");
 		applicantImage = game.skin.getRegion("applicant");
@@ -212,8 +213,13 @@ public class PlayScene extends Scene {
 		// Buttons
 		{
 			Table buttonsTable = new Table(game.skin);
+			buttonsTable.defaults().fillX();
 
-			buttonsTable.add(new OutrageButton("Orphanage", game.skin, new Money(3, 10, 0), 30f)).row();
+			buttonsTable.add("Public Relations:").row();
+			buttonsTable.add(new OutrageButton("Support an Artist", game.skin, new Money(0, 19, 6), 0.05f)).row();
+			buttonsTable.add(new OutrageButton("Hold a Ball", game.skin, new Money(1, 5, 0), 0.10f)).row();
+			buttonsTable.add(new OutrageButton("Build an Orphanage", game.skin, new Money(2, 10, 0), 0.20f)).row();
+			buttonsTable.add(new OutrageButton("Build a Hospital", game.skin, new Money(3, 5, 0), 0.30f)).row();
 
 			table.add(buttonsTable).row();
 		}
@@ -332,8 +338,9 @@ public class PlayScene extends Scene {
 			lostTitle.setPosition(390, 500, Align.center);
 			gameOverOverlay.addActor(lostTitle);
 
-			Label lostReason = new Label("Unfortunately, you have run out of money.", game.skin, "titleItalic");
+			lostReason = new Label("Unfortunately, you have run out of money.", game.skin, "titleItalic");
 			lostReason.setPosition(390, 400, Align.center);
+			lostReason.setAlignment(Align.center);
 			gameOverOverlay.addActor(lostReason);
 
 			TextButton menuButton = new TextButton("Return to Menu", game.skin);
@@ -360,7 +367,7 @@ public class PlayScene extends Scene {
 		while (diggingCounter >= diggingDelay) {
 			diggingCounter -= diggingDelay;
 			bodyPartCount++;
-			outragePercent += 0.1f;
+			outragePercent += 0.001f;
 			// TODO: Animate a +1 body part
 		}
 
@@ -421,7 +428,9 @@ public class PlayScene extends Scene {
 			}
 		}
 
-
+		if (outragePercent >= 1f) {
+			gameOver(false);
+		}
 
 		updateLabels();
 	}
@@ -442,7 +451,7 @@ public class PlayScene extends Scene {
 		expensesLabel.setText(String.format("Expenses: %s / minute", expenses));
 		fundsLabel.setText(String.format("Funds: %s", money));
 
-		outrageLabel.setText(String.format("Public Outrage: %1$.2f%%", outragePercent));
+		outrageLabel.setText(String.format("Public Outrage: %1$.2f%%", outragePercent * 100f));
 	}
 
 	@Override
@@ -473,7 +482,7 @@ public class PlayScene extends Scene {
 
 		// Public Outrage
 		batch.draw(outrageBackground, 520, 200);
-		int drawOutrages = (int) (outragePercent / 10);
+		int drawOutrages = (int) (outragePercent * 10f);
 		for (int i=0; i<drawOutrages; i++) {
 			batch.draw(sadFace, 520 + (i % 5) * 52, 300 - (i / 5) * 100);
 		}
@@ -539,7 +548,7 @@ public class PlayScene extends Scene {
 	void sellMonster() {
 		money.add(sellMonsterAmount);
 		monsterCount--;
-		outragePercent += 0.2f;
+		outragePercent += 0.002f;
 	}
 
 	void updateExpenses() {
@@ -556,7 +565,15 @@ public class PlayScene extends Scene {
 		if (gameState != GameState.Lost) {
 			gameState = GameState.Lost;
 
-
+			if (ranOutOfMoney) {
+				lostReason.setText("Unfortunately, you have gone bankrupt.\n" +
+					"Perhaps you could have kept a closer eye on your\n" +
+					"finances and sold more monsters.");
+			} else {
+				lostReason.setText("The general public have become so outraged that\n" +
+					"they have burned down your establishment.\n" +
+					"Maybe you should keep a closer eye on public opinion.");
+			}
 
 			gameOverOverlay.setVisible(true);
 		}
@@ -571,7 +588,7 @@ public class PlayScene extends Scene {
 			this.cost = cost;
 			this.outrageReduction = outrageReduction;
 
-			setText(String.format("Build %1$s (%2$s)", name, cost));
+			setText(String.format("%1$s (%2$s)", name, cost));
 
 			addListener(new ClickListener(Input.Buttons.LEFT) {
 				@Override
@@ -591,7 +608,7 @@ public class PlayScene extends Scene {
 			if (!money.isLessThan(cost)) {
 				// Build an orphanage!
 				money.subtract(cost);
-				outragePercent = MathUtils.clamp(outragePercent - outrageReduction, 0f, 100f);
+				outragePercent = MathUtils.clamp(outragePercent - outrageReduction, 0f, 1f);
 			}
 		}
 	}
