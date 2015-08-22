@@ -126,7 +126,7 @@ public class PlayScene extends Scene {
 		expensesRemainder = new Money(0, 0, 0);
 		moneyChangeCounter = 0;
 		secondsCounter = 0;
-		outragePercent = 0.45f;
+		outragePercent = 0.10f;
 
 		tempMan = game.skin.getRegion("temp-man");
 		applicantImage = game.skin.getRegion("applicant");
@@ -367,7 +367,7 @@ public class PlayScene extends Scene {
 		while (diggingCounter >= diggingDelay) {
 			diggingCounter -= diggingDelay;
 			bodyPartCount++;
-			outragePercent += 0.001f;
+			outragePercent += 0.003f;
 			// TODO: Animate a +1 body part
 		}
 
@@ -422,7 +422,8 @@ public class PlayScene extends Scene {
 		// New applicants!
 		if (applicantCount < 5) {
 			applicantCounter += delta;
-			if (applicantCounter > 10f) {
+			float currentApplicationDelay = 10f + (outragePercent * 30f);
+			if (applicantCounter > currentApplicationDelay) {
 				applicantCounter -= 10f;
 				applicantCount++;
 			}
@@ -548,7 +549,7 @@ public class PlayScene extends Scene {
 	void sellMonster() {
 		money.add(sellMonsterAmount);
 		monsterCount--;
-		outragePercent += 0.002f;
+		outragePercent += 0.01f;
 	}
 
 	void updateExpenses() {
