@@ -11,8 +11,12 @@ public class MenuScene extends Scene {
 	MenuScene(FrankGame game) {
 		super(game);
 		Label title = new Label("Frankenstein's Monsters, Inc.", game.skin, "title");
-		title.setPosition(400, 300, Align.center);
+		title.setPosition(400, 350, Align.center);
 		addActor(title);
+
+		Label established = new Label("Established 1818", game.skin, "titleItalic");
+		established.setPosition(400, 300, Align.center);
+		addActor(established);
 
 		TextButton playButton = new TextButton("Begin", game.skin);
 		playButton.setPosition(400, 200, Align.center);

@@ -1,6 +1,7 @@
 {
 	"com.badlogic.gdx.graphics.g2d.BitmapFont": {
 		"titleFont": { "file": "titlefont.fnt" },
+		"titleItalicFont": { "file": "title-italic-font.fnt" },
 		"textFont": { "file": "textfont.fnt" }
 	},
 
@@ -17,6 +18,10 @@
 		},
 		"title": {
 			"font": "titleFont",
+			"fontColor": "white"
+		},
+		"titleItalic": {
+			"font": "titleItalicFont",
 			"fontColor": "white"
 		}
 	},

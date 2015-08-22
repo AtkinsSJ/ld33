@@ -42,7 +42,7 @@ public class PlayScene extends Scene {
 	private final Label stitchingLabel;
 	private final Label zappingLabel;
 	private final Label monstersLabel;
-	private final Label salesLabel;
+	private final Label applicantsLabel;
 	private final Label outrageLabel;
 	private final Label fundsLabel;
 	private final Label incomeLabel;
@@ -105,6 +105,7 @@ public class PlayScene extends Scene {
 		diggingCounter = 0;
 		diggingDelay = 1f;
 		diggingLabel = new Label("Body Parts: 0 / minute", game.skin);
+		diggingLabel.setAlignment(Align.topLeft);
 		addDigger(false);
 
 		surgeryBackground = game.skin.getRegion("operating-theatre");
@@ -113,6 +114,7 @@ public class PlayScene extends Scene {
 		stitchingCounter = 0;
 		stitchingDelay = 5f;
 		stitchingLabel = new Label("Bodies: 0 / minute", game.skin);
+		stitchingLabel.setAlignment(Align.topLeft);
 		addSurgeon(false);
 
 		zappingBackground = game.skin.getRegion("zap-room");
@@ -121,6 +123,7 @@ public class PlayScene extends Scene {
 		zappingCounter = 0;
 		zappingDelay = 5f;
 		zappingLabel = new Label("Monsters: 0 / minute", game.skin);
+		zappingLabel.setAlignment(Align.topLeft);
 		addZapper(false);
 
 		Table table = new Table(game.skin);
@@ -133,19 +136,23 @@ public class PlayScene extends Scene {
 		table.add(zappingLabel).row();
 
 		monstersLabel = new Label("Monsters", game.skin);
-		salesLabel = new Label("Job Applicants: 0", game.skin);
+		monstersLabel.setAlignment(Align.topLeft);
+		applicantsLabel = new Label("Job Applicants: 0", game.skin);
+		applicantsLabel.setAlignment(Align.topLeft);
 		outrageLabel = new Label("Public Outrage: 15%", game.skin);
+		outrageLabel.setAlignment(Align.topLeft);
 
 		table.add(monstersLabel);
-		table.add(salesLabel);
+		table.add(applicantsLabel);
 		table.add(outrageLabel).row();
 
 		Table statsTable = new Table(game.skin);
+		statsTable.defaults().expandX().fillX().left();
 		fundsLabel = new Label("", game.skin);
 		incomeLabel = new Label("", game.skin);
 		expensesLabel = new Label("", game.skin);
 
-		statsTable.add("All lies:").row();
+		statsTable.add("Financial Circumstances:").row();
 		statsTable.add(fundsLabel).row();
 		statsTable.add(incomeLabel).row();
 		statsTable.add(expensesLabel).row();
@@ -220,11 +227,11 @@ public class PlayScene extends Scene {
 			sellOverlay.addActor(image);
 
 			Label sellLabel = new Label("SELL", game.skin, "title");
-			sellLabel.setPosition(390, 150, Align.center);
+			sellLabel.setPosition(390, 125, Align.center);
 			sellOverlay.addActor(sellLabel);
 
 			Label costLabel = new Label(String.format("(+ %s)", sellMonsterAmount), game.skin, "title");
-			costLabel.setPosition(390, 50, Align.center);
+			costLabel.setPosition(390, 75, Align.center);
 			sellOverlay.addActor(costLabel);
 
 			addActor(sellOverlay);
@@ -287,9 +294,9 @@ public class PlayScene extends Scene {
 		float bodiesPerMinute = 60f / stitchingDelay;
 		float monstersPerMinute = 60f / zappingDelay;
 
-		diggingLabel.setText(String.format("Body Parts: %1$d\n(%2$.2f / minute)", bodyPartCount, bodyPartsPerMinute));
-		stitchingLabel.setText(String.format("Bodies: %1$d\n(%2$.2f / minute)", bodyCount, bodiesPerMinute));
-		zappingLabel.setText(String.format("Monsters: %1$d\n(%2$.2f / minute)", monsterCount, monstersPerMinute));
+		diggingLabel.setText(String.format("Body Parts: %1$d (%2$.2f / minute)", bodyPartCount, bodyPartsPerMinute));
+		stitchingLabel.setText(String.format("Bodies: %1$d (%2$.2f / minute)\nRequires 5 body parts", bodyCount, bodiesPerMinute));
+		zappingLabel.setText(String.format("Monsters: %1$d (%2$.2f / minute)", monsterCount, monstersPerMinute));
 
 		monstersLabel.setText(String.format("Monsters: %d", monsterCount));
 
