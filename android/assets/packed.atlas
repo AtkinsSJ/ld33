@@ -13,7 +13,25 @@ applicant
   index: -1
 button
   rotate: false
+  xy: 841, 944
+  size: 30, 30
+  split: 4, 4, 4, 4
+  pad: 8, 8, 0, 2
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+button-disabled
+  rotate: false
   xy: 841, 976
+  size: 30, 30
+  split: 4, 4, 4, 4
+  pad: 8, 8, 0, 2
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
+button-down
+  rotate: false
+  xy: 784, 704
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2

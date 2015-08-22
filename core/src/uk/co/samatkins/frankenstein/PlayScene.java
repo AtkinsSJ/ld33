@@ -3,13 +3,11 @@ package uk.co.samatkins.frankenstein;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
@@ -62,6 +60,9 @@ public class PlayScene extends Scene {
 	private boolean draggingApplicant;
 	private boolean draggingMonster;
 	private float dragX, dragY;
+
+	private float outragePercent;
+	private final Money orphanageCost;
 
 	enum GameState {
 		Playing,
@@ -121,6 +122,9 @@ public class PlayScene extends Scene {
 		expensesRemainder = new Money(0, 0, 0);
 		moneyChangeCounter = 0;
 		secondsCounter = 0;
+
+		outragePercent = 0f;
+		orphanageCost = new Money(3,10,0);
 
 		tempMan = game.skin.getRegion("temp-man");
 		applicantImage = game.skin.getRegion("applicant");
@@ -184,17 +188,29 @@ public class PlayScene extends Scene {
 		table.add(applicantsLabel);
 		table.add(outrageLabel).row();
 
-		Table statsTable = new Table(game.skin);
-		statsTable.defaults().expandX().fillX().left();
-		fundsLabel = new Label("", game.skin);
-		incomeLabel = new Label("", game.skin);
-		expensesLabel = new Label("", game.skin);
+		// Stats
+		{
+			Table statsTable = new Table(game.skin);
+			statsTable.defaults().expandX().fillX().left();
+			fundsLabel = new Label("", game.skin);
+			incomeLabel = new Label("", game.skin);
+			expensesLabel = new Label("", game.skin);
 
-		statsTable.add("Financial Circumstances:").row();
-		statsTable.add(fundsLabel).row();
-		statsTable.add(incomeLabel).row();
-		statsTable.add(expensesLabel).row();
-		table.add(statsTable).colspan(3).width(780);
+			statsTable.add("Financial Circumstances:").row();
+			statsTable.add(fundsLabel).row();
+			statsTable.add(incomeLabel).row();
+			statsTable.add(expensesLabel).row();
+			table.add(statsTable).colspan(2).width(520);
+		}
+
+		// Buttons
+		{
+			Table buttonsTable = new Table(game.skin);
+
+			buttonsTable.add(new OutrageButton("Orphanage", game.skin, orphanageCost, 30f)).row();
+
+			table.add(buttonsTable).row();
+		}
 
 		updateLabels();
 
@@ -338,6 +354,7 @@ public class PlayScene extends Scene {
 		while (diggingCounter >= diggingDelay) {
 			diggingCounter -= diggingDelay;
 			bodyPartCount++;
+			outragePercent += 0.1f;
 			// TODO: Animate a +1 body part
 		}
 
@@ -398,6 +415,8 @@ public class PlayScene extends Scene {
 			}
 		}
 
+
+
 		updateLabels();
 	}
 
@@ -416,6 +435,8 @@ public class PlayScene extends Scene {
 		incomeLabel.setText(String.format("Income: %s / minute", income));
 		expensesLabel.setText(String.format("Expenses: %s / minute", expenses));
 		fundsLabel.setText(String.format("Funds: %s", money));
+
+		outrageLabel.setText(String.format("Public Outrage: %1$.2f%%", outragePercent));
 	}
 
 	@Override
@@ -509,6 +530,7 @@ public class PlayScene extends Scene {
 	void sellMonster() {
 		money.add(sellMonsterAmount);
 		monsterCount--;
+		outragePercent += 0.2f;
 	}
 
 	void updateExpenses() {
@@ -528,6 +550,40 @@ public class PlayScene extends Scene {
 
 
 			gameOverOverlay.setVisible(true);
+		}
+	}
+
+	class OutrageButton extends TextButton {
+		private final Money cost;
+		private final float outrageReduction;
+
+		public OutrageButton(String name, Skin skin, Money cost, float outrageReduction) {
+			super(null, skin);
+			this.cost = cost;
+			this.outrageReduction = outrageReduction;
+
+			setText(String.format("Build %1$s (%2$s)", name, cost));
+
+			addListener(new ClickListener(Input.Buttons.LEFT) {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					onClicked();
+				}
+			});
+		}
+
+		@Override
+		public void act(float delta) {
+			super.act(delta);
+			setDisabled(money.isLessThan(cost));
+		}
+
+		private void onClicked() {
+			if (!money.isLessThan(cost)) {
+				// Build an orphanage!
+				money.subtract(cost);
+				outragePercent = MathUtils.clamp(outragePercent - outrageReduction, 0f, 100f);
+			}
 		}
 	}
 }
