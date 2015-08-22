@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 public class PlayScene extends Scene {
@@ -61,6 +63,13 @@ public class PlayScene extends Scene {
 	private boolean draggingMonster;
 	private float dragX, dragY;
 
+	enum GameState {
+		Playing,
+		Lost
+	}
+	private GameState gameState;
+	private final Group gameOverOverlay;
+
 	enum Room {
 		Digging,
 		Surgery,
@@ -104,7 +113,8 @@ public class PlayScene extends Scene {
 	PlayScene(FrankGame game) {
 		super(game);
 
-		money = new Money(1, 0, 6);
+		gameState = GameState.Playing;
+		money = new Money(0, 5, 6);
 		income = new Money(0, 0, 0);
 		expenses = new Money(0, 0, 0);
 		expensesPerSecond = new Money(0, 0, 0);
@@ -117,7 +127,7 @@ public class PlayScene extends Scene {
 
 		bodyPartCount = 0;
 		bodyCount = 0;
-		monsterCount = 11;
+		monsterCount = 1;
 		applicantCount = 3 + 3;
 		applicantCounter = 0;
 
@@ -196,7 +206,8 @@ public class PlayScene extends Scene {
 					&& (draggingMonster || draggingApplicant)) {
 
 					Room room = getRoomAtPosition(x, y);
-					if (room != null) {
+					if (gameState == GameState.Playing
+						&& room != null) {
 						switch (room) {
 							case Digging: {
 								addDigger(draggingMonster);
@@ -235,7 +246,8 @@ public class PlayScene extends Scene {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				// Drag a monster if we have monsters and the mouse is in the monster closet
-				if (pointer == Input.Buttons.LEFT) {
+				if (gameState == GameState.Playing
+					&& pointer == Input.Buttons.LEFT) {
 
 					Room room = getRoomAtPosition(x, y);
 					if (room == null) {
@@ -285,6 +297,35 @@ public class PlayScene extends Scene {
 			sellOverlay.addActor(costLabel);
 
 			addActor(sellOverlay);
+		}
+
+		// Game Over Overlay
+		{
+			gameOverOverlay = new Group();
+			Image image = new Image(game.skin.getRegion("lost-overlay"));
+			image.setPosition(0, 0);
+			gameOverOverlay.addActor(image);
+
+			Label lostTitle = new Label("Game Over!", game.skin, "title");
+			lostTitle.setPosition(390, 500, Align.center);
+			gameOverOverlay.addActor(lostTitle);
+
+			Label lostReason = new Label("Unfortunately, you have run out of money.", game.skin, "titleItalic");
+			lostReason.setPosition(390, 400, Align.center);
+			gameOverOverlay.addActor(lostReason);
+
+			TextButton menuButton = new TextButton("Return to Menu", game.skin);
+			menuButton.addListener(new ClickListener(Input.Buttons.LEFT) {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					PlayScene.this.game.showMenu();
+				}
+			});
+			menuButton.setPosition(390, 200, Align.center);
+			gameOverOverlay.addActor(menuButton);
+
+			addActor(gameOverOverlay);
+			gameOverOverlay.setVisible(false);
 		}
 	}
 
@@ -341,6 +382,11 @@ public class PlayScene extends Scene {
 
 			moneyChangeCounter -= 1f;
 			money.subtract(expensesPerSecond);
+
+			if (money.isLessThan(Money.Zero)) {
+				// You're out of cash!
+				gameOver(true);
+			}
 		}
 
 		// New applicants!
@@ -473,5 +519,15 @@ public class PlayScene extends Scene {
 		expenses.setTotalPence(expensesPence);
 		expensesPerSecond.setTotalPence(expensesPencePerSec);
 		expensesRemainder.setTotalPence(remainder);
+	}
+
+	void gameOver(boolean ranOutOfMoney) {
+		if (gameState != GameState.Lost) {
+			gameState = GameState.Lost;
+
+
+
+			gameOverOverlay.setVisible(true);
+		}
 	}
 }

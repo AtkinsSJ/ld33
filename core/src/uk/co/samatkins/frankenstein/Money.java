@@ -6,6 +6,8 @@ package uk.co.samatkins.frankenstein;
  * ergo £1 = 240d
  */
 public class Money {
+	public static final Money Zero = new Money(0,0,0);
+
 	private int totalPence;
 
 	public Money(int pounds, int shillings, int pence) {
@@ -32,11 +34,17 @@ public class Money {
 		this.totalPence = totalPence;
 	}
 
+	public boolean isLessThan(Money other) {
+		return this.totalPence < other.totalPence;
+	}
+
 	@Override
 	public String toString() {
-		int pounds = totalPence / 240,
-			shillings = (totalPence / 12) % 20,
-			pence = totalPence % 12;
-		return String.format("\u00A3%1$d.%2$02ds.%3$02dd", pounds, shillings, pence);
+		boolean minus = totalPence < 0;
+
+		int pounds = Math.abs(totalPence / 240),
+			shillings = Math.abs((totalPence / 12) % 20),
+			pence = Math.abs(totalPence % 12);
+		return String.format("%1$c\u00A3%2$d.%3$02ds.%4$02dd", minus ? '-' : '\0', pounds, shillings, pence);
 	}
 }

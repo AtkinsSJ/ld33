@@ -1,19 +1,19 @@
 
 packed.png
-size: 1024,512
+size: 1024,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 applicant
   rotate: false
-  xy: 784, 302
+  xy: 784, 872
   size: 55, 134
   orig: 55, 134
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 2, 2
+  xy: 841, 976
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -22,35 +22,42 @@ button
   index: -1
 graves
   rotate: false
-  xy: 2, 34
+  xy: 2, 2
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
+lost-overlay
+  rotate: false
+  xy: 2, 406
+  size: 780, 600
+  orig: 780, 600
+  offset: 0, 0
+  index: -1
 operating-theatre
   rotate: false
-  xy: 264, 34
+  xy: 264, 2
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 sell-overlay
   rotate: false
-  xy: 2, 236
+  xy: 2, 204
   size: 780, 200
   orig: 780, 200
   offset: 0, 0
   index: -1
 temp-man
   rotate: false
-  xy: 841, 302
+  xy: 784, 736
   size: 55, 134
   orig: 55, 134
   offset: 0, 0
   index: -1
 zap-room
   rotate: false
-  xy: 526, 34
+  xy: 526, 2
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
