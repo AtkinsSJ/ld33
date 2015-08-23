@@ -13,7 +13,7 @@ applicant
   index: -1
 button
   rotate: false
-  xy: 895, 976
+  xy: 841, 850
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -22,7 +22,7 @@ button
   index: -1
 button-disabled
   rotate: false
-  xy: 784, 704
+  xy: 887, 976
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -31,7 +31,7 @@ button-disabled
   index: -1
 button-down
   rotate: false
-  xy: 841, 927
+  xy: 784, 655
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -43,6 +43,27 @@ graves
   xy: 2, 2
   size: 260, 200
   orig: 260, 200
+  offset: 0, 0
+  index: -1
+hand
+  rotate: false
+  xy: 887, 949
+  size: 24, 25
+  orig: 24, 25
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 841, 882
+  size: 31, 35
+  orig: 31, 35
+  offset: 0, 0
+  index: -1
+leg
+  rotate: false
+  xy: 841, 919
+  size: 44, 87
+  orig: 44, 87
   offset: 0, 0
   index: -1
 lost-overlay
@@ -68,7 +89,7 @@ operating-theatre
   index: -1
 sadface
   rotate: false
-  xy: 841, 959
+  xy: 784, 687
   size: 52, 47
   orig: 52, 47
   offset: 0, 0

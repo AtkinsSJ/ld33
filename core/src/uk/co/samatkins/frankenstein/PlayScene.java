@@ -17,6 +17,9 @@ public class PlayScene extends Scene {
 	private int diggers, diggerMonsters;
 	private float diggingCounter;
 	private float diggingDelay;
+	private final TextureRegion[] bodyPartImages;
+	private int bodyPartIndex;
+	private final Group bodyPartsGroup;
 
 	private final TextureRegion surgeryBackground;
 	private int surgeons, surgeonMonsters;
@@ -144,6 +147,13 @@ public class PlayScene extends Scene {
 
 		diggingBackground = game.skin.getRegion("graves");
 		diggingForeground = game.skin.getRegion("graves-foreground");
+		bodyPartImages = new TextureRegion[] {
+			game.skin.getRegion("head"),
+			game.skin.getRegion("hand"),
+			game.skin.getRegion("leg"),
+		};
+		bodyPartIndex = 0;
+		bodyPartsGroup = new Group();
 		diggers = 0;
 		diggerMonsters = 0;
 		diggingCounter = 0;
@@ -369,7 +379,13 @@ public class PlayScene extends Scene {
 			diggingCounter -= diggingDelay;
 			bodyPartCount++;
 			outragePercent += 0.003f;
-			// TODO: Animate a +1 body part
+
+			// Animate a +1 body part
+			int bodyPartImage = bodyPartIndex;
+			bodyPartIndex = (bodyPartIndex + 1) % bodyPartImages.length;
+			bodyPartsGroup.addActor(new BodyPart(bodyPartImages[bodyPartImage], 100, 400,
+				MathUtils.random(-30f, 300f), MathUtils.random(300f, 400f), -98f, 2f,
+				MathUtils.random(360f), MathUtils.random(-360f, 360f) ));
 		}
 
 		// Stitching
@@ -435,6 +451,8 @@ public class PlayScene extends Scene {
 		}
 
 		updateLabels();
+
+		bodyPartsGroup.act(delta);
 	}
 
 	void updateLabels() {
@@ -464,7 +482,7 @@ public class PlayScene extends Scene {
 
 		// Digging
 		batch.draw(diggingBackground, 0, 400);
-		// TODO: Flying body parts
+		bodyPartsGroup.draw(batch, 1f);	// Flying body parts
 		batch.draw(diggingForeground, 0, 400);
 
 		batch.draw(surgeryBackground, 260, 400);
