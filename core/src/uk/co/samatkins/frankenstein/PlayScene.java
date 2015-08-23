@@ -209,6 +209,9 @@ public class PlayScene extends Scene {
 		protesters = new TextureRegion[] {
 			game.skin.getRegion("protester"),
 			game.skin.getRegion("protester2"),
+			game.skin.getRegion("protester3"),
+			game.skin.getRegion("protester4"),
+			game.skin.getRegion("protester5"),
 		};
 
 		table.add(monstersLabel);

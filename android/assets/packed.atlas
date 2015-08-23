@@ -6,14 +6,14 @@ filter: Nearest,Nearest
 repeat: none
 applicant
   rotate: false
-  xy: 264, 187
+  xy: 613, 670
   size: 50, 150
   orig: 50, 150
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 316, 307
+  xy: 526, 456
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -22,7 +22,7 @@ button
   index: -1
 button-disabled
   rotate: false
-  xy: 784, 816
+  xy: 784, 825
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -31,7 +31,7 @@ button-disabled
   index: -1
 button-down
   rotate: false
-  xy: 264, 155
+  xy: 958, 992
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -40,105 +40,126 @@ button-down
   index: -1
 graves
   rotate: false
-  xy: 2, 611
+  xy: 2, 620
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 graves-foreground
   rotate: false
-  xy: 264, 339
+  xy: 264, 348
   size: 260, 68
   orig: 260, 68
   offset: 0, 0
   index: -1
 hand
   rotate: false
-  xy: 923, 988
+  xy: 613, 643
   size: 24, 25
   orig: 24, 25
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 613, 776
+  xy: 264, 2
   size: 31, 35
   orig: 31, 35
   offset: 0, 0
   index: -1
 leg
   rotate: false
-  xy: 526, 557
+  xy: 351, 259
   size: 44, 87
   orig: 44, 87
   offset: 0, 0
   index: -1
 lost-overlay
   rotate: false
-  xy: 2, 2
+  xy: 665, 819
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 monster
   rotate: false
-  xy: 871, 873
+  xy: 264, 39
   size: 50, 140
   orig: 50, 140
   offset: 0, 0
   index: -1
 monster-closet
   rotate: false
-  xy: 2, 409
+  xy: 2, 418
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 operating-theatre
   rotate: false
-  xy: 264, 611
+  xy: 264, 620
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 outrage-room
   rotate: false
-  xy: 2, 207
+  xy: 2, 216
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 protester
   rotate: false
-  xy: 784, 848
+  xy: 784, 857
   size: 85, 165
   orig: 85, 165
   offset: 0, 0
   index: -1
 protester2
   rotate: false
-  xy: 526, 646
+  xy: 526, 655
+  size: 85, 165
+  orig: 85, 165
+  offset: 0, 0
+  index: -1
+protester3
+  rotate: false
+  xy: 264, 181
+  size: 85, 165
+  orig: 85, 165
+  offset: 0, 0
+  index: -1
+protester4
+  rotate: false
+  xy: 871, 857
+  size: 85, 165
+  orig: 85, 165
+  offset: 0, 0
+  index: -1
+protester5
+  rotate: false
+  xy: 526, 488
   size: 85, 165
   orig: 85, 165
   offset: 0, 0
   index: -1
 sell-overlay
   rotate: false
-  xy: 2, 813
+  xy: 2, 822
   size: 780, 200
   orig: 780, 200
   offset: 0, 0
   index: -1
 waiting-room
   rotate: false
-  xy: 264, 409
+  xy: 264, 418
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 zap-room
   rotate: false
-  xy: 2, 5
+  xy: 2, 14
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
