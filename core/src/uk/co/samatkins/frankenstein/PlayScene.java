@@ -208,6 +208,7 @@ public class PlayScene extends Scene {
 		outrageLabel.setAlignment(Align.topLeft);
 		protesters = new TextureRegion[] {
 			game.skin.getRegion("protester"),
+			game.skin.getRegion("protester2"),
 		};
 
 		table.add(monstersLabel);
@@ -224,7 +225,7 @@ public class PlayScene extends Scene {
 
 			statsTable.add("Financial Circumstances:").row();
 			statsTable.add(fundsLabel).row();
-			statsTable.add(incomeLabel).row();
+//			statsTable.add(incomeLabel).row(); // Income is meaningless as selling is manual! Easier to just ignore it.
 			statsTable.add(expensesLabel).row();
 
 			statsTable.add(new RetireButton("Retire", game.skin, retireCost)).row();
@@ -567,7 +568,7 @@ public class PlayScene extends Scene {
 		// Public Outrage
 		{
 			batch.draw(outrageBackground, 520, 200);
-			int drawProtesters = (int) (outragePercent * 10f);
+			int drawProtesters = MathUtils.round(outragePercent * 5f);
 			float xDiff = 230f / drawProtesters;
 			for (int i = 0; i < drawProtesters; i++) {
 				batch.draw(protesters[i % protesters.length], 520 + i * xDiff, 220);

@@ -6,14 +6,14 @@ filter: Nearest,Nearest
 repeat: none
 applicant
   rotate: false
-  xy: 526, 661
+  xy: 264, 187
   size: 50, 150
   orig: 50, 150
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 264, 165
+  xy: 316, 307
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -31,7 +31,7 @@ button-disabled
   index: -1
 button-down
   rotate: false
-  xy: 578, 781
+  xy: 264, 155
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -54,21 +54,21 @@ graves-foreground
   index: -1
 hand
   rotate: false
-  xy: 316, 312
+  xy: 923, 988
   size: 24, 25
   orig: 24, 25
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 526, 624
+  xy: 613, 776
   size: 31, 35
   orig: 31, 35
   offset: 0, 0
   index: -1
 leg
   rotate: false
-  xy: 871, 926
+  xy: 526, 557
   size: 44, 87
   orig: 44, 87
   offset: 0, 0
@@ -82,7 +82,7 @@ lost-overlay
   index: -1
 monster
   rotate: false
-  xy: 264, 197
+  xy: 871, 873
   size: 50, 140
   orig: 50, 140
   offset: 0, 0
@@ -111,6 +111,13 @@ outrage-room
 protester
   rotate: false
   xy: 784, 848
+  size: 85, 165
+  orig: 85, 165
+  offset: 0, 0
+  index: -1
+protester2
+  rotate: false
+  xy: 526, 646
   size: 85, 165
   orig: 85, 165
   offset: 0, 0
