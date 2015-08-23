@@ -45,6 +45,15 @@ public class Money {
 		int pounds = Math.abs(totalPence / 240),
 			shillings = Math.abs((totalPence / 12) % 20),
 			pence = Math.abs(totalPence % 12);
-		return String.format("%1$c\u00A3%2$d.%3$02ds.%4$02dd", minus ? '-' : '\0', pounds, shillings, pence);
+
+		StringBuilder stb = new StringBuilder();
+		if (minus) stb.append('-');
+		stb.append('\u00A3').append(pounds).append('.');
+		if (shillings < 10) stb.append('0');
+		stb.append(shillings).append("s.");
+		if (pence < 10) stb.append('0');
+		stb.append(pence).append('d');
+		return stb.toString();
+//		return String.format("%1$c\u00A3%2$d.%3$02ds.%4$02dd", minus ? '-' : '\0', pounds, shillings, pence);
 	}
 }

@@ -350,7 +350,7 @@ public class PlayScene extends Scene {
 			sellLabel.setPosition(390, 125, Align.center);
 			sellOverlay.addActor(sellLabel);
 
-			Label costLabel = new Label(String.format("(+ %s)", sellMonsterAmount), game.skin, "title");
+			Label costLabel = new Label("(+ " + sellMonsterAmount + ")", game.skin, "title");
 			costLabel.setPosition(390, 75, Align.center);
 			sellOverlay.addActor(costLabel);
 
@@ -517,23 +517,27 @@ public class PlayScene extends Scene {
 		bodyPartsGroup.act(delta);
 	}
 
+	float rounded(float in) {
+		return (float)(Math.round(in * 100.0) / 100.0);
+	}
+
 	void updateLabels() {
 		float bodyPartsPerMinute = 60f / diggingDelay;
 		float bodiesPerMinute = 60f / stitchingDelay;
 		float monstersPerMinute = 60f / zappingDelay;
 
-		diggingLabel.setText(String.format("Body Parts: %1$d (%2$.2f / minute)", bodyPartCount, bodyPartsPerMinute));
-		stitchingLabel.setText(String.format("Bodies: %1$d (%2$.2f / minute)\nRequires 5 body parts", bodyCount, bodiesPerMinute));
-		zappingLabel.setText(String.format("Monsters: %1$d (%2$.2f / minute)", monsterCount, monstersPerMinute));
+		diggingLabel.setText("Body Parts: " + bodyPartCount + " (" + rounded(bodyPartsPerMinute) + " / minute)");
+		stitchingLabel.setText("Bodies: " + bodyCount + " (" + rounded(bodiesPerMinute) + " / minute)\nRequires 5 body parts");
+		zappingLabel.setText("Monsters: " + monsterCount + " (" + rounded(monstersPerMinute) + " / minute)");
 
-		monstersLabel.setText(String.format("Monsters: %d\n(Click and drag to assign or sell)", monsterCount));
-		applicantsLabel.setText(String.format("Applicants: %d\n(Click and drag to assign)", applicantCount));
+		monstersLabel.setText("Monsters: " + monsterCount + "\n(Click and drag to assign or sell)");
+		applicantsLabel.setText("Applicants: " + applicantCount + "\n(Click and drag to assign)");
 
-		incomeLabel.setText(String.format("Income: %s / minute", income));
-		expensesLabel.setText(String.format("Expenses: %s / minute", expenses));
-		fundsLabel.setText(String.format("Funds: %s", money));
+		incomeLabel.setText("Income: " + income + " / minute");
+		expensesLabel.setText("Expenses: " + expenses + " / minute");
+		fundsLabel.setText("Funds: " + money);
 
-		outrageLabel.setText(String.format("Public Outrage: %1$.2f%%", outragePercent * 100f));
+		outrageLabel.setText("Public Outrage: " + rounded(outragePercent * 100f) + "%");
 	}
 
 	@Override
@@ -689,7 +693,7 @@ public class PlayScene extends Scene {
 			super(null, skin);
 			this.cost = cost;
 
-			setText(String.format("%1$s (%2$s)", name, cost));
+			setText(name + " (" + cost + ")");
 
 			addListener(new ClickListener(Input.Buttons.LEFT) {
 				@Override
