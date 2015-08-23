@@ -1,5 +1,6 @@
 package uk.co.samatkins.frankenstein;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -60,7 +61,7 @@ public class PlayScene extends Scene {
 	private final TextureRegion applicantImage;
 	private int applicantCount;
 	private float applicantCounter;
-	private final TextureRegion tempMan;
+	private final TextureRegion monsterImage;
 	private final Group sellOverlay;
 
 	private boolean draggingApplicant;
@@ -131,7 +132,7 @@ public class PlayScene extends Scene {
 		secondsCounter = 0;
 		outragePercent = 0.10f;
 
-		tempMan = game.skin.getRegion("temp-man");
+		monsterImage = game.skin.getRegion("monster");
 		applicantImage = game.skin.getRegion("applicant");
 		sadFace = game.skin.getRegion("sadface");
 
@@ -373,6 +374,11 @@ public class PlayScene extends Scene {
 	public void act(float delta) {
 		super.act(delta);
 
+		// SUPER-DUPER CHEAT CODES!!!
+		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+			monsterCount++;
+		}
+
 		// Digging
 		diggingCounter += delta;
 		while (diggingCounter >= diggingDelay) {
@@ -492,8 +498,14 @@ public class PlayScene extends Scene {
 		// Monster storage
 		batch.draw(monstersBackground, 0, 200);
 		int drawMonsters = monsterCount - (draggingMonster ? 1 : 0);
+		float xDiff;
+//		if (drawMonsters <= 8) {
+//			xDiff = 30;
+//		} else {
+			xDiff = 230f / (float)drawMonsters;
+//		}
 		for (int i=0; i<drawMonsters; i++) {
-			batch.draw(tempMan, (i % 8) * 30, 250 - (i / 8) * 10);
+			batch.draw(monsterImage, 5 + i * xDiff, 220);
 		}
 
 		// Job applicants
@@ -510,20 +522,24 @@ public class PlayScene extends Scene {
 			batch.draw(sadFace, 520 + (i % 5) * 52, 300 - (i / 5) * 100);
 		}
 
-		if (draggingMonster) {
-			sellOverlay.setVisible(true);
-			batch.draw(tempMan, dragX, dragY);
-		} else {
-			sellOverlay.setVisible(false);
-		}
-
-		if (draggingApplicant) {
-			batch.draw(applicantImage, dragX, dragY);
-		}
+		sellOverlay.setVisible(draggingMonster);
 
 		batch.end();
 
 		super.draw();
+
+
+		if (draggingMonster) {
+			batch.begin();
+			batch.draw(monsterImage, dragX - 25, dragY - 70);
+			batch.end();
+		}
+
+		if (draggingApplicant) {
+			batch.begin();
+			batch.draw(applicantImage, dragX, dragY);
+			batch.end();
+		}
 	}
 
 	void addDigger(boolean isMonster) {

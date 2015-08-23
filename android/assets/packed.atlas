@@ -6,14 +6,14 @@ filter: Nearest,Nearest
 repeat: none
 applicant
   rotate: false
-  xy: 784, 872
+  xy: 836, 872
   size: 55, 134
   orig: 55, 134
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 841, 850
+  xy: 784, 708
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -22,7 +22,7 @@ button
   index: -1
 button-disabled
   rotate: false
-  xy: 887, 976
+  xy: 893, 927
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -31,7 +31,7 @@ button-disabled
   index: -1
 button-down
   rotate: false
-  xy: 784, 655
+  xy: 947, 976
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -47,21 +47,21 @@ graves
   index: -1
 hand
   rotate: false
-  xy: 887, 949
+  xy: 893, 900
   size: 24, 25
   orig: 24, 25
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 841, 882
+  xy: 784, 740
   size: 31, 35
   orig: 31, 35
   offset: 0, 0
   index: -1
 leg
   rotate: false
-  xy: 841, 919
+  xy: 784, 777
   size: 44, 87
   orig: 44, 87
   offset: 0, 0
@@ -71,6 +71,13 @@ lost-overlay
   xy: 2, 406
   size: 780, 600
   orig: 780, 600
+  offset: 0, 0
+  index: -1
+monster
+  rotate: false
+  xy: 784, 866
+  size: 50, 140
+  orig: 50, 140
   offset: 0, 0
   index: -1
 monster-closet
@@ -89,7 +96,7 @@ operating-theatre
   index: -1
 sadface
   rotate: false
-  xy: 784, 687
+  xy: 893, 959
   size: 52, 47
   orig: 52, 47
   offset: 0, 0
@@ -99,13 +106,6 @@ sell-overlay
   xy: 2, 204
   size: 780, 200
   orig: 780, 200
-  offset: 0, 0
-  index: -1
-temp-man
-  rotate: false
-  xy: 784, 736
-  size: 55, 134
-  orig: 55, 134
   offset: 0, 0
   index: -1
 
