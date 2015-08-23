@@ -20,6 +20,8 @@ public class FrankGame extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		Gdx.gl.glClearColor(51f/255f, 108f/255f, 31f/255f, 1);
+
 		batch = new SpriteBatch();
 		viewport = new FitViewport(780, 600);
 
@@ -42,7 +44,6 @@ public class FrankGame extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		scene.act();
