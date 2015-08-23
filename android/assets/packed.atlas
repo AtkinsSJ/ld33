@@ -6,14 +6,14 @@ filter: Nearest,Nearest
 repeat: none
 applicant
   rotate: false
-  xy: 784, 689
+  xy: 526, 661
   size: 50, 150
   orig: 50, 150
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 836, 772
+  xy: 264, 165
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -22,7 +22,7 @@ button
   index: -1
 button-disabled
   rotate: false
-  xy: 923, 976
+  xy: 784, 816
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -31,7 +31,7 @@ button-disabled
   index: -1
 button-down
   rotate: false
-  xy: 784, 568
+  xy: 578, 781
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -40,104 +40,98 @@ button-down
   index: -1
 graves
   rotate: false
-  xy: 2, 2
+  xy: 2, 611
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
+graves-foreground
+  rotate: false
+  xy: 264, 339
+  size: 260, 68
+  orig: 260, 68
+  offset: 0, 0
+  index: -1
 hand
   rotate: false
-  xy: 923, 949
+  xy: 316, 312
   size: 24, 25
   orig: 24, 25
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 836, 804
+  xy: 526, 624
   size: 31, 35
   orig: 31, 35
   offset: 0, 0
   index: -1
 leg
   rotate: false
-  xy: 784, 600
+  xy: 871, 926
   size: 44, 87
   orig: 44, 87
   offset: 0, 0
   index: -1
 lost-overlay
   rotate: false
-  xy: 2, 406
-  size: 780, 600
-  orig: 780, 600
+  xy: 2, 2
+  size: 1, 1
+  orig: 1, 1
   offset: 0, 0
   index: -1
 monster
   rotate: false
-  xy: 871, 866
+  xy: 264, 197
   size: 50, 140
   orig: 50, 140
   offset: 0, 0
   index: -1
 monster-closet
   rotate: false
-  xy: 264, 2
+  xy: 2, 409
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 operating-theatre
   rotate: false
-  xy: 526, 2
+  xy: 264, 611
+  size: 260, 200
+  orig: 260, 200
+  offset: 0, 0
+  index: -1
+outrage-room
+  rotate: false
+  xy: 2, 207
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 protester
   rotate: false
-  xy: 784, 841
+  xy: 784, 848
   size: 85, 165
   orig: 85, 165
   offset: 0, 0
   index: -1
 sell-overlay
   rotate: false
-  xy: 2, 204
+  xy: 2, 813
   size: 780, 200
   orig: 780, 200
   offset: 0, 0
   index: -1
-
-packed2.png
-size: 1024,512
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-graves-foreground
-  rotate: false
-  xy: 2, 2
-  size: 260, 68
-  orig: 260, 68
-  offset: 0, 0
-  index: -1
-outrage-room
-  rotate: false
-  xy: 2, 274
-  size: 260, 200
-  orig: 260, 200
-  offset: 0, 0
-  index: -1
 waiting-room
   rotate: false
-  xy: 2, 72
+  xy: 264, 409
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 zap-room
   rotate: false
-  xy: 264, 274
+  xy: 2, 5
   size: 260, 200
   orig: 260, 200
   offset: 0, 0

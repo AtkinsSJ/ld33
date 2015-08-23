@@ -18,7 +18,8 @@ public class MenuScene extends Scene {
 		"in wages.\n\n" +
 		"Your actions understandably generate public outrage - the higher it is, the fewer people will want " +
 		"to work for you, and if it ever reaches 100% an angry mob will burn down your premises. Try to avoid that, " +
-		"by spending money on charitable works.";
+		"by spending money on charitable works.\n\n" +
+		"Win by earning enough money to retire!";
 
 	MenuScene(FrankGame game) {
 		super(game);
@@ -37,7 +38,7 @@ public class MenuScene extends Scene {
 		addActor(instructions);
 
 		TextButton playButton = new TextButton("Begin", game.skin);
-		playButton.setPosition(390, 100, Align.center);
+		playButton.setPosition(390, 70, Align.center);
 		playButton.addListener(new ClickListener(Input.Buttons.LEFT) {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

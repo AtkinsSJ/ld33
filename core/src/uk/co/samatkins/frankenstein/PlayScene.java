@@ -44,6 +44,7 @@ public class PlayScene extends Scene {
 	private float moneyChangeCounter;
 	private int secondsCounter;
 	private final Money sellMonsterAmount = new Money(0, 5, 0);
+	private final Money retireCost = new Money(10,0,0);
 
 	private final Label diggingLabel;
 	private final Label stitchingLabel;
@@ -73,10 +74,12 @@ public class PlayScene extends Scene {
 
 	enum GameState {
 		Playing,
-		Lost
+		Won,
+		Lost,
 	}
 	private GameState gameState;
-	private final Group gameOverOverlay;
+	private final Group gameWonOverlay,
+						gameLostOverlay;
 	private final Label lostReason;
 
 	enum Room {
@@ -123,7 +126,7 @@ public class PlayScene extends Scene {
 		super(game);
 
 		gameState = GameState.Playing;
-		money = new Money(0, 5, 6);
+		money = new Money(1, 0, 6);
 		income = new Money(0, 0, 0);
 		expenses = new Money(0, 0, 0);
 		expensesPerSecond = new Money(0, 0, 0);
@@ -223,8 +226,13 @@ public class PlayScene extends Scene {
 			statsTable.add(fundsLabel).row();
 			statsTable.add(incomeLabel).row();
 			statsTable.add(expensesLabel).row();
-			table.add(statsTable).colspan(2).width(520);
+
+			statsTable.add(new RetireButton("Retire", game.skin, retireCost)).row();
+
+			table.add(statsTable).width(260);
 		}
+
+		table.add().width(260);
 
 		// Buttons
 		{
@@ -232,10 +240,10 @@ public class PlayScene extends Scene {
 			buttonsTable.defaults().fillX();
 
 			buttonsTable.add("Public Relations:").row();
-			buttonsTable.add(new OutrageButton("Support an Artist", game.skin, new Money(0, 19, 6), 0.05f)).row();
-			buttonsTable.add(new OutrageButton("Hold a Ball", game.skin, new Money(1, 5, 0), 0.10f)).row();
-			buttonsTable.add(new OutrageButton("Build an Orphanage", game.skin, new Money(2, 10, 0), 0.20f)).row();
-			buttonsTable.add(new OutrageButton("Build a Hospital", game.skin, new Money(3, 5, 0), 0.30f)).row();
+			buttonsTable.add(new OutrageButton("Sponsor an Artist", game.skin, new Money(0, 19, 6), 0.075f)).row();
+			buttonsTable.add(new OutrageButton("Hold a Ball", game.skin, new Money(1, 5, 0), 0.15f)).row();
+			buttonsTable.add(new OutrageButton("Build an Orphanage", game.skin, new Money(2, 10, 0), 0.30f)).row();
+			buttonsTable.add(new OutrageButton("Build a Hospital", game.skin, new Money(3, 5, 0), 0.50f)).row();
 
 			table.add(buttonsTable).row();
 		}
@@ -329,7 +337,7 @@ public class PlayScene extends Scene {
 		{
 			sellOverlay = new Group();
 			Image image = new Image(game.skin.getRegion("sell-overlay"));
-			image.setPosition(0,0);
+			image.setPosition(0, 0);
 			sellOverlay.addActor(image);
 
 			Label sellLabel = new Label("SELL", game.skin, "title");
@@ -343,21 +351,56 @@ public class PlayScene extends Scene {
 			addActor(sellOverlay);
 		}
 
+		// Game Won Overlay
+		{
+			gameWonOverlay = new Group();
+			Image image = new Image(game.skin.getRegion("lost-overlay"));
+			image.setBounds(0, 0, 780, 600);
+			gameWonOverlay.addActor(image);
+
+			Label title = new Label("You Win!", game.skin, "title");
+			title.setPosition(390, 500, Align.center);
+			gameWonOverlay.addActor(title);
+
+			String text = "Your impressive business skills have allowed you to retire\n" +
+				"at age 30, to a peaceful island in the Caribbean.\n\n" +
+				"I think congratulations are in order!\n\n" +
+				"Meanwhile, your monstrous creations may or may not be\n" +
+				"rampaging through London. Oops.";
+			Label winDescription = new Label(text, game.skin, "titleItalic");
+			winDescription.setPosition(390, 300, Align.center);
+			winDescription.setAlignment(Align.center);
+			gameWonOverlay.addActor(winDescription);
+
+			TextButton menuButton = new TextButton("Return to Menu", game.skin);
+			menuButton.addListener(new ClickListener(Input.Buttons.LEFT) {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					PlayScene.this.game.showMenu();
+				}
+			});
+			menuButton.setPosition(390, 70, Align.center);
+			gameWonOverlay.addActor(menuButton);
+
+			addActor(gameWonOverlay);
+			gameWonOverlay.setVisible(false);
+		}
+
 		// Game Over Overlay
 		{
-			gameOverOverlay = new Group();
+			gameLostOverlay = new Group();
 			Image image = new Image(game.skin.getRegion("lost-overlay"));
-			image.setPosition(0, 0);
-			gameOverOverlay.addActor(image);
+			image.setBounds(0, 0, 780, 600);
+			gameLostOverlay.addActor(image);
 
 			Label lostTitle = new Label("Game Over!", game.skin, "title");
 			lostTitle.setPosition(390, 500, Align.center);
-			gameOverOverlay.addActor(lostTitle);
+			gameLostOverlay.addActor(lostTitle);
 
 			lostReason = new Label("Unfortunately, you have run out of money.", game.skin, "titleItalic");
 			lostReason.setPosition(390, 400, Align.center);
 			lostReason.setAlignment(Align.center);
-			gameOverOverlay.addActor(lostReason);
+			gameLostOverlay.addActor(lostReason);
 
 			TextButton menuButton = new TextButton("Return to Menu", game.skin);
 			menuButton.addListener(new ClickListener(Input.Buttons.LEFT) {
@@ -367,10 +410,10 @@ public class PlayScene extends Scene {
 				}
 			});
 			menuButton.setPosition(390, 200, Align.center);
-			gameOverOverlay.addActor(menuButton);
+			gameLostOverlay.addActor(menuButton);
 
-			addActor(gameOverOverlay);
-			gameOverOverlay.setVisible(false);
+			addActor(gameLostOverlay);
+			gameLostOverlay.setVisible(false);
 		}
 	}
 
@@ -610,7 +653,7 @@ public class PlayScene extends Scene {
 	}
 
 	void gameOver(boolean ranOutOfMoney) {
-		if (gameState != GameState.Lost) {
+		if (gameState == GameState.Playing) {
 			gameState = GameState.Lost;
 
 			if (ranOutOfMoney) {
@@ -623,18 +666,16 @@ public class PlayScene extends Scene {
 					"Maybe you should keep a closer eye on public opinion.");
 			}
 
-			gameOverOverlay.setVisible(true);
+			gameLostOverlay.setVisible(true);
 		}
 	}
 
-	class OutrageButton extends TextButton {
-		private final Money cost;
-		private final float outrageReduction;
+	abstract class CostButton extends TextButton {
+		protected final Money cost;
 
-		public OutrageButton(String name, Skin skin, Money cost, float outrageReduction) {
+		public CostButton(String name, Skin skin, Money cost) {
 			super(null, skin);
 			this.cost = cost;
-			this.outrageReduction = outrageReduction;
 
 			setText(String.format("%1$s (%2$s)", name, cost));
 
@@ -652,11 +693,38 @@ public class PlayScene extends Scene {
 			setDisabled(money.isLessThan(cost));
 		}
 
-		private void onClicked() {
+		abstract void onClicked();
+	}
+
+	class OutrageButton extends CostButton {
+		private final float outrageReduction;
+
+		public OutrageButton(String name, Skin skin, Money cost, float outrageReduction) {
+			super(name, skin, cost);
+			this.outrageReduction = outrageReduction;
+		}
+		void onClicked() {
 			if (!money.isLessThan(cost)) {
 				// Build an orphanage!
 				money.subtract(cost);
 				outragePercent = MathUtils.clamp(outragePercent - outrageReduction, 0f, 1f);
+			}
+		}
+	}
+
+	class RetireButton extends CostButton {
+
+		public RetireButton(String name, Skin skin, Money cost) {
+			super(name, skin, cost);
+		}
+
+		@Override
+		void onClicked() {
+			if (!money.isLessThan(cost)) {
+				// Retire!
+				money.subtract(cost);
+				gameState = GameState.Won;
+				gameWonOverlay.setVisible(true);
 			}
 		}
 	}
