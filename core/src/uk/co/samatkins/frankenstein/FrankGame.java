@@ -2,6 +2,7 @@ package uk.co.samatkins.frankenstein;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -15,6 +16,7 @@ public class FrankGame extends ApplicationAdapter {
 
 	private Scene scene;
 	public Skin skin;
+	private Music music;
 
 	@Override
 	public void create () {
@@ -23,6 +25,11 @@ public class FrankGame extends ApplicationAdapter {
 
 		TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("packed.atlas"));
 		skin = new Skin(Gdx.files.internal("skin.json"), atlas);
+
+		music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
+		music.setVolume(0.5f);
+		music.setLooping(true);
+		music.play();
 
 		showMenu();
 	}
