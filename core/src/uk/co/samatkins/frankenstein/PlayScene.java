@@ -194,7 +194,7 @@ public class PlayScene extends Scene {
 		Table table = new Table(game.skin);
 		table.setFillParent(true);
 		addActor(table);
-		table.defaults().fill().width(260).height(200).top();
+		table.defaults().fill().width(250).height(200).padLeft(5).padRight(5).top();
 
 		table.add(diggingLabel);
 		table.add(stitchingLabel);
@@ -235,10 +235,10 @@ public class PlayScene extends Scene {
 
 			statsTable.add(new RetireButton("Retire", game.skin, retireCost)).row();
 
-			table.add(statsTable).width(260);
+			table.add(statsTable);
 		}
 
-		table.add().width(260);
+		table.add();
 
 		// Buttons
 		{
