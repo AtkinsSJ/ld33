@@ -6,14 +6,14 @@ filter: Nearest,Nearest
 repeat: none
 applicant
   rotate: false
-  xy: 836, 872
-  size: 55, 134
-  orig: 55, 134
+  xy: 784, 689
+  size: 50, 150
+  orig: 50, 150
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 784, 708
+  xy: 836, 772
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -22,7 +22,7 @@ button
   index: -1
 button-disabled
   rotate: false
-  xy: 893, 927
+  xy: 923, 976
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -31,7 +31,7 @@ button-disabled
   index: -1
 button-down
   rotate: false
-  xy: 947, 976
+  xy: 784, 568
   size: 30, 30
   split: 4, 4, 4, 4
   pad: 8, 8, 0, 2
@@ -47,21 +47,21 @@ graves
   index: -1
 hand
   rotate: false
-  xy: 893, 900
+  xy: 923, 949
   size: 24, 25
   orig: 24, 25
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 784, 740
+  xy: 836, 804
   size: 31, 35
   orig: 31, 35
   offset: 0, 0
   index: -1
 leg
   rotate: false
-  xy: 784, 777
+  xy: 784, 600
   size: 44, 87
   orig: 44, 87
   offset: 0, 0
@@ -75,7 +75,7 @@ lost-overlay
   index: -1
 monster
   rotate: false
-  xy: 784, 866
+  xy: 871, 866
   size: 50, 140
   orig: 50, 140
   offset: 0, 0
@@ -94,11 +94,11 @@ operating-theatre
   orig: 260, 200
   offset: 0, 0
   index: -1
-sadface
+protester
   rotate: false
-  xy: 893, 959
-  size: 52, 47
-  orig: 52, 47
+  xy: 784, 841
+  size: 85, 165
+  orig: 85, 165
   offset: 0, 0
   index: -1
 sell-overlay

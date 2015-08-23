@@ -56,8 +56,7 @@ public class PlayScene extends Scene {
 	private final Label expensesLabel;
 
 	private final TextureRegion applicantBackground,
-								monstersBackground,
-								outrageBackground;
+								monstersBackground;
 	private final TextureRegion applicantImage;
 	private int applicantCount;
 	private float applicantCounter;
@@ -69,8 +68,8 @@ public class PlayScene extends Scene {
 	private float dragX, dragY;
 
 	private float outragePercent;
-	private final TextureRegion sadFace;
-	private final Label lostReason;
+	private final TextureRegion	outrageBackground;
+	private final TextureRegion[] protesters;
 
 	enum GameState {
 		Playing,
@@ -78,6 +77,7 @@ public class PlayScene extends Scene {
 	}
 	private GameState gameState;
 	private final Group gameOverOverlay;
+	private final Label lostReason;
 
 	enum Room {
 		Digging,
@@ -134,7 +134,6 @@ public class PlayScene extends Scene {
 
 		monsterImage = game.skin.getRegion("monster");
 		applicantImage = game.skin.getRegion("applicant");
-		sadFace = game.skin.getRegion("sadface");
 
 		monstersBackground = game.skin.getRegion("monster-closet");
 		applicantBackground = game.skin.getRegion("waiting-room");
@@ -198,10 +197,15 @@ public class PlayScene extends Scene {
 
 		monstersLabel = new Label("Monsters", game.skin);
 		monstersLabel.setAlignment(Align.topLeft);
+
 		applicantsLabel = new Label("Job Applicants: 0", game.skin);
 		applicantsLabel.setAlignment(Align.topLeft);
+
 		outrageLabel = new Label("Public Outrage: 15%", game.skin);
 		outrageLabel.setAlignment(Align.topLeft);
+		protesters = new TextureRegion[] {
+			game.skin.getRegion("protester"),
+		};
 
 		table.add(monstersLabel);
 		table.add(applicantsLabel);
@@ -378,13 +382,16 @@ public class PlayScene extends Scene {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
 			monsterCount++;
 		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+			outragePercent += 0.1f;
+		}
 
 		// Digging
 		diggingCounter += delta;
 		while (diggingCounter >= diggingDelay) {
 			diggingCounter -= diggingDelay;
 			bodyPartCount++;
-			outragePercent += 0.003f;
+			outragePercent = MathUtils.clamp(outragePercent + 0.003f, 0f, 1f);
 
 			// Animate a +1 body part
 			int bodyPartImage = bodyPartIndex;
@@ -496,30 +503,32 @@ public class PlayScene extends Scene {
 		batch.draw(zappingBackground, 520, 400);
 
 		// Monster storage
-		batch.draw(monstersBackground, 0, 200);
-		int drawMonsters = monsterCount - (draggingMonster ? 1 : 0);
-		float xDiff;
-//		if (drawMonsters <= 8) {
-//			xDiff = 30;
-//		} else {
-			xDiff = 230f / (float)drawMonsters;
-//		}
-		for (int i=0; i<drawMonsters; i++) {
-			batch.draw(monsterImage, 5 + i * xDiff, 220);
+		{
+			batch.draw(monstersBackground, 0, 200);
+			int drawMonsters = monsterCount - (draggingMonster ? 1 : 0);
+			float xDiff = 230f / (float) drawMonsters;
+			for (int i = 0; i < drawMonsters; i++) {
+				batch.draw(monsterImage, 5 + i * xDiff, 220);
+			}
 		}
 
 		// Job applicants
-		batch.draw(applicantBackground, 260, 200);
-		int drawApplicants = applicantCount - (draggingApplicant ? 1 : 0);
-		for (int i=0; i<drawApplicants; i++) {
-			batch.draw(applicantImage, 260 + 10 + i * 61, 220);
+		{
+			batch.draw(applicantBackground, 260, 200);
+			int drawApplicants = applicantCount - (draggingApplicant ? 1 : 0);
+			for (int i = 0; i < drawApplicants; i++) {
+				batch.draw(applicantImage, 260 + 10 + i * 61, 220);
+			}
 		}
 
 		// Public Outrage
-		batch.draw(outrageBackground, 520, 200);
-		int drawOutrages = (int) (outragePercent * 10f);
-		for (int i=0; i<drawOutrages; i++) {
-			batch.draw(sadFace, 520 + (i % 5) * 52, 300 - (i / 5) * 100);
+		{
+			batch.draw(outrageBackground, 520, 200);
+			int drawProtesters = (int) (outragePercent * 10f);
+			float xDiff = 230f / drawProtesters;
+			for (int i = 0; i < drawProtesters; i++) {
+				batch.draw(protesters[i % protesters.length], 520 + i * xDiff, 220);
+			}
 		}
 
 		sellOverlay.setVisible(draggingMonster);
@@ -587,7 +596,7 @@ public class PlayScene extends Scene {
 	void sellMonster() {
 		money.add(sellMonsterAmount);
 		monsterCount--;
-		outragePercent += 0.01f;
+		outragePercent = MathUtils.clamp(outragePercent + 0.01f, 0f, 1f);
 	}
 
 	void updateExpenses() {
