@@ -89,27 +89,34 @@ temp-man
   index: -1
 
 packed2.png
-size: 1024,256
+size: 1024,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-outrage-room
+graves-foreground
   rotate: false
   xy: 2, 2
+  size: 260, 68
+  orig: 260, 68
+  offset: 0, 0
+  index: -1
+outrage-room
+  rotate: false
+  xy: 2, 274
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 waiting-room
   rotate: false
-  xy: 264, 2
+  xy: 2, 72
   size: 260, 200
   orig: 260, 200
   offset: 0, 0
   index: -1
 zap-room
   rotate: false
-  xy: 526, 2
+  xy: 264, 274
   size: 260, 200
   orig: 260, 200
   offset: 0, 0

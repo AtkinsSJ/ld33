@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Align;
 
 public class PlayScene extends Scene {
 
-	private final TextureRegion diggingBackground;
+	private final TextureRegion diggingBackground, diggingForeground;
 	private int diggers, diggerMonsters;
 	private float diggingCounter;
 	private float diggingDelay;
@@ -143,6 +143,7 @@ public class PlayScene extends Scene {
 		applicantCounter = 0;
 
 		diggingBackground = game.skin.getRegion("graves");
+		diggingForeground = game.skin.getRegion("graves-foreground");
 		diggers = 0;
 		diggerMonsters = 0;
 		diggingCounter = 0;
@@ -420,7 +421,7 @@ public class PlayScene extends Scene {
 		}
 
 		// New applicants!
-		if (applicantCount < 5) {
+		if (applicantCount < 4) {
 			applicantCounter += delta;
 			float currentApplicationDelay = 10f + (outragePercent * 30f);
 			if (applicantCounter > currentApplicationDelay) {
@@ -461,7 +462,10 @@ public class PlayScene extends Scene {
 		Batch batch = getBatch();
 		batch.begin();
 
+		// Digging
 		batch.draw(diggingBackground, 0, 400);
+		// TODO: Flying body parts
+		batch.draw(diggingForeground, 0, 400);
 
 		batch.draw(surgeryBackground, 260, 400);
 
@@ -478,7 +482,7 @@ public class PlayScene extends Scene {
 		batch.draw(applicantBackground, 260, 200);
 		int drawApplicants = applicantCount - (draggingApplicant ? 1 : 0);
 		for (int i=0; i<drawApplicants; i++) {
-			batch.draw(applicantImage, 260 + (i % 8) * 30, 250 - (i / 8) * 10);
+			batch.draw(applicantImage, 260 + 10 + i * 61, 220);
 		}
 
 		// Public Outrage
