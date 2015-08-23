@@ -22,7 +22,7 @@ public class PlayScene extends Scene {
 	private int bodyPartIndex;
 	private final Group bodyPartsGroup;
 
-	private final TextureRegion surgeryBackground;
+	private final TextureRegion surgeryBackground, surgeryInUse;
 	private int surgeons, surgeonMonsters;
 	private float stitchingCounter;
 	private float stitchingDelay;
@@ -166,6 +166,7 @@ public class PlayScene extends Scene {
 		addDigger(false);
 
 		surgeryBackground = game.skin.getRegion("operating-theatre");
+		surgeryInUse = game.skin.getRegion("operating-theatre-inuse");
 		surgeons = 0;
 		surgeonMonsters = 0;
 		stitchingCounter = 0;
@@ -546,6 +547,9 @@ public class PlayScene extends Scene {
 		batch.draw(diggingForeground, 0, 400);
 
 		batch.draw(surgeryBackground, 260, 400);
+		if (bodyPartCount >= 5) {
+			batch.draw(surgeryInUse, 260, 400);
+		}
 
 		batch.draw(zappingBackground, 520, 400);
 
