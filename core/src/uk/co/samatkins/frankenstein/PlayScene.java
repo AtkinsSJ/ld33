@@ -28,7 +28,7 @@ public class PlayScene extends Scene {
 	private float stitchingDelay;
 	private final Label stitchingWaitingLabel;
 
-	private final TextureRegion zappingBackground;
+	private final TextureRegion zappingBackground, zappingInUse;
 	private int zappers, zapperMonsters;
 	private float zappingCounter;
 	private float zappingDelay;
@@ -179,6 +179,7 @@ public class PlayScene extends Scene {
 		addActor(stitchingWaitingLabel);
 
 		zappingBackground = game.skin.getRegion("zap-room");
+		zappingInUse = game.skin.getRegion("zap-room-inuse");
 		zappers = 0;
 		zapperMonsters = 0;
 		zappingCounter = 0;
@@ -552,6 +553,9 @@ public class PlayScene extends Scene {
 		}
 
 		batch.draw(zappingBackground, 520, 400);
+		if (bodyCount >= 1) {
+			batch.draw(zappingInUse, 520, 400);
+		}
 
 		// Monster storage
 		{
