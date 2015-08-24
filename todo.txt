@@ -1,0 +1,10 @@
+TODO:
+
+- Fix expenses, maybe use a delay calculation like with production (calculate time between spending a penny, then loop)
+- More art for applicants
+- Sitting-down applicants
+- Animations for surgery and zapping
+- Animations for protesters
+- Randomised monster appearance, from different parts
+- Monsters have names?
+- Applicants also have names
